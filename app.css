@@ -24,7 +24,9 @@
 }
 #main {
     top: 40px;
+    height: calc(100% - 40px);
     left: 150px;
+    width: calc(100% - 150px);
 }
 /* email.css */
 body {
@@ -33,6 +35,9 @@ body {
 a {
     text-decoration: none;
     color: #1b98f8
+}
+iframe {
+    border-style: none;
 }
 
 .primary-button,
