@@ -1,0 +1,63 @@
+.pure-g {
+    letter-spacing: normal;
+}
+
+#top, #nav, #main {
+    position: fixed;
+    overflow: auto;
+    bottom: 0;
+}
+#main {
+    top: 40px;
+    height: calc(100% - 40px);
+    left: 150px;
+    width: calc(100% - 150px);
+    border-style: none;
+}
+
+#nav {
+    top: 40px;
+    left: 0;
+    width: 150px;
+    height: 100%;
+    background: #252a3a;
+    text-align: center;
+}
+#nav .nav-menu-button {
+    display: block;
+    top: .5em;
+    right: .5em;
+    position: absolute
+}
+#nav .pure-menu {
+    background: transparent;
+    border: 0;
+    text-align: left
+}
+#nav .pure-menu-link:hover,
+#nav .pure-menu-link:focus {
+    background: #373c5a
+}
+#nav .pure-menu-link {
+    color: #fff;
+    margin-left: .5em
+}
+#nav .pure-menu-heading {
+    border-bottom: 0;
+    font-size: 110%;
+    color: #4b7197
+}
+
+#top {
+    top: 0;
+    left: 0;
+    height: 40px;
+    width: 100%;
+    background: #252a3a;
+}
+#top .logo {
+    width: 150px;
+    height: 100%;
+    border-radius: 0;
+    border-bottom-right-radius:15px;
+}

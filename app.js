@@ -1,24 +1,36 @@
 class App {
     constructor() {
+        // sessionStorage.a = 1
+        // sessionStorage.b = 2
+        // sessionStorage.c = 3
         Object.keys(sessionStorage).forEach(key => {
-            this[key] = sessionStorage[key]
+            this[key] = JSON.parse(sessionStorage[key])
         })
-        // log(this)
     }
     static new() {
         return new this()
     }
 
-    get(key) {
-        return this[key]
+    $get(key) {
+        let v = sessionStorage[key]
+        if (v) {
+            return JSON.parse(v)
+        } else {
+            return v
+        }
     }
-    set(key, val) {
-        this[key] = val
+    $set(key, val) {
+        if (val) {
+            sessionStorage[key] = JSON.stringify(val)
+            this[key] = val
+        } else {
+            throw "value 错误"
+        }
         return this
     }
-    del(key) {
+    $del(key) {
         delete sessionStorage[key]
-        delete db[key]
+        delete this[key]
         return this
     }
 
