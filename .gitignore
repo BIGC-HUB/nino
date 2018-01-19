@@ -1,0 +1,5 @@
+# 匹配所有
+node_modules
+
+# 根目录开始匹配
+/data
