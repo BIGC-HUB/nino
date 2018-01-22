@@ -1,0 +1,71 @@
+body {
+    background: #3d8e9b;
+    font-family: PingFangSC,Microsoft Yahei,sans-serif;
+}
+#sign {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#sign .main {
+    box-sizing: border-box;
+    background: white;
+    border-radius: 5px;
+    width: 400px;
+    height: 500px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding: 0 40px;
+    color: #3d8e9b;
+}
+#sign .logo {
+    width: 100%;
+    margin: 74.2px 0 38px;
+}
+#sign .title {
+    width: 100%;
+    font-weight: 500;
+}
+#sign input::-webkit-input-placeholder {
+    color: rgba(61, 142, 155, 0.5);
+}
+#sign input {
+    box-sizing: border-box;
+    width: 320px;
+    margin: 18px 0;
+    border: solid 1px rgba(60, 142, 154, 0.5);
+    padding: 9px 18px;
+    outline-color: #3d8e9b;
+}
+#sign btn.sign-in:active {
+    background: #cee6e6;
+}
+#sign btn.sign-in {
+    cursor: pointer;
+    margin: 18px 0;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 36px;
+    color: white;
+    background: #3d8e9b;
+}
+#copyright {
+    position: fixed;
+    bottom: 5px;
+    left: 0;
+    color: white;
+    font-weight: 100;
+    width: 100%;
+    text-align: center;
+    opacity: 0.75;
+    font-size: 12px;
+}

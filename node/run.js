@@ -37,7 +37,7 @@ const Mer = {
     initHTML(path) {
         let html = fs.readFileSync(`web${path}/e.html`, 'utf8').replace(/>(\s+)</img, '><')
         html = html.replace('<!-- nino-js -->',  Mer.js([
-            "https://bigc.cc/cdn/js/bigsea.js",
+            "/bigsea.js",
             "/app.js",
             path + "/e.js",
         ]))
@@ -46,7 +46,6 @@ const Mer = {
             "/app.css",
             path + "/e.css",
         ]))
-        log(path)
         return html
     },
 }

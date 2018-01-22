@@ -5,6 +5,9 @@ a {
     text-decoration: none;
     color: #1b98f8
 }
+.hide {
+    opacity: 0;
+}
 
 /* button */
 .primary-button, .secondary-button {
@@ -24,7 +27,6 @@ a {
     padding: .5em 2em;
     font-size: 80%
 }
-
 /* email */
 .email-count {
     color: #4b7197
