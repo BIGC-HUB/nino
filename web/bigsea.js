@@ -204,23 +204,87 @@ class Sea {
         return this
     }
 
+    // 动画
+    animate(obj, time, callback) {
+        let that = this
+        let fps = 60
+        let s = time || 1
+        let t = s * 1000 / fps
+        let parseValue = function(val) {
+            let res = {
+                value: null,
+                unit: '',
+            }
+            for(var i = 0; i < val.length; i++) {
+                let e = val[i]
+                if (!/\d|\./.test(e)) {
+                    res.value = Number(val.slice(0, i))
+                    res.unit = val.slice(i)
+                    break
+                }
+            }
+            if (res.value == null) {
+                res.value = Number(val)
+            }
+            return res
+        }
+        let dict = {
+            "opacity": {
+                max: 1,
+                min: 0,
+            },
+        }
+        for (let css in obj) {
+            let o = parseValue(obj[css])
+            let a = dict[css].min
+            let b = o.value
+            if (b <= a) {
+                a = dict[css].max
+            }
+            if (this.dom.style[css] == String(b)) {
+                return;
+            }
+            let op = a > b ? false : true
+            let step = b > 0 ? b / t : a / t
+            let animate = setInterval(function() {
+            let stop = function() {
+                that.css("opacity", String(b) + o.unit)
+                clearInterval(animate)
+                if (typeof callback == 'function') { callback() }
+            }
+            let next = function() {
+                that.css("opacity", String(a) + o.unit)
+            }
+            if (op) {
+                if (a > b) {
+                    stop()
+                } else {
+                    next()
+                }
+                a += step
+            } else {
+                if (a < b) {
+                    stop()
+                } else {
+                    next()
+                }
+                a -= step
+            }
+        }, fps)
+        }
+    }
+
     // 淡出
-    fadeOut(time) {
-        let t = time || 1
-        this.css({
-            "animation-duration": t + "s",
-            "animation-fill-mode": "both",
-            "animation-name": "fadeOut",
-        })
+    fadeOut(time, callback) {
+        this.animate({
+            "opacity": 0,
+        }, time, callback)
     }
     // 淡入
-    fadeIn(time) {
-        let t = time || 1
-        this.css({
-            "animation-duration": t + "s",
-            "animation-fill-mode": "both",
-            "animation-name": "fadeIn",
-        })
+    fadeIn(time, callback) {
+        this.animate({
+            "opacity": 1,
+        }, time, callback)
     }
 
     static find(...args) {
@@ -460,27 +524,6 @@ Sea.init = {
             callback(false)
         })
     },
-    animate() {
-        // CSS
-        Sea.innerHTML = `<style>
-                @keyframes fadeOut {
-                    from {
-                        opacity: 1;
-                    } to {
-                        opacity: 0;
-                    }
-                }
-
-                @keyframes fadeIn {
-                    from {
-                        opacity: 0;
-                    } to {
-                        opacity: 1;
-                    }
-                }
-            </style>`.css()
-        Sea.find('head').append(Sea.innerHTML)
-    }
 }
 Object.keys(Sea.init).forEach(k => {
     Sea.init[k]()
@@ -506,3 +549,10 @@ cors: 跨域地址 String (url 填自己服务器接口)`
 
 // 其它
 window.eval = undefined
+
+
+// 测试
+window.onload = function() {
+    // Sea.find('body').fadeOut(5)
+    // Sea.find('body').fadeIn()
+}
