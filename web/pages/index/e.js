@@ -1,7 +1,7 @@
-let sign = Sea.find('#sign')
+let sign = Sea('#sign')
 let Mer = {
     signing: false,
-    ip: 'http://192.168.5.131:1337',
+    ip: 'http://192.168.5.130:1337',
 }
 sign.find('.sign-in').on('click', function() {
     let phone = sign.find('.phone').dom
@@ -49,5 +49,5 @@ sign.find('.password').on('keydown', function(e) {
     }
 })
 sign.find('input').on('focus', function(e) {
-    sign.find('.tips').fadeOut()
+    sign.find('.tips').fadeOut(null, null, true)
 })

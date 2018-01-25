@@ -1,7 +1,7 @@
 let range = function(callback) {
     let a = 0
     let b = 101
-    let that = Sea.find('#welcome .speed')
+    let that = Sea('#welcome .speed')
     let time = 0.5
 
     let fps = 60

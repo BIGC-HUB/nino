@@ -1,4 +1,4 @@
-// Html 间隙
+// Html css 间隙
 String.prototype.html = function() {
     let html = this.slice(this.indexOf('<'))
     return html.replace(/>(\s+)</img, '><')
@@ -38,9 +38,8 @@ const cut = (n) => {
         }
     }
 }
-
 // bigsea.js
-class Sea {
+class bigsea {
     constructor(select) {
         if (typeof select == 'string') {
             this.arr = Array.from(document.querySelectorAll(select))
@@ -74,26 +73,22 @@ class Sea {
         return this
     }
     // 显示
-    show(str) {
-        if (str) {
-            this.display = str
-        }
+    show() {
         for (let e of this.arr) {
-            e.style.display = this.display || 'flex'
+            e.hidden = false
         }
         return this
     }
     // 隐藏
     hide() {
         for (let e of this.arr) {
-            this.display = e.style.display
-            e.style.display = 'none'
+            e.hidden = true
         }
         return this
     }
     // 查找子元素
     find(select) {
-        let sea = Sea.find()
+        let sea = Sea()
         let arr = []
         for (let e of this.arr) {
             Array.from(e.querySelectorAll(select)).forEach(e => {
@@ -106,7 +101,7 @@ class Sea {
     }
     // 选择父元素
     parent() {
-        let sea = Sea.find()
+        let sea = Sea()
         let arr = [this.dom.parentElement]
         sea.arr = arr
         sea.dom = arr[0]
@@ -114,7 +109,7 @@ class Sea {
     }
     // 查找祖先元素
     parents(select) {
-        let sea = Sea.find()
+        let sea = Sea()
         let arr = [this.dom.closest(select)]
         sea.arr = arr
         sea.dom = arr[0]
@@ -195,13 +190,26 @@ class Sea {
             e.remove()
         }
     }
-
     // 删除属性
     removeAttr(str) {
         for (let e of this.arr) {
             e.removeAttribute(str)
         }
         return this
+    }
+
+    // 判断隐藏
+    isHidden() {
+        let e = this.dom
+        if (e.hidden) {
+            return true
+        } else if (e.style.display === "none") {
+            return true
+        } else if (e.style.opacity === "0") {
+            return true
+        } else {
+            return false
+        }
     }
 
     // 动画
@@ -241,8 +249,9 @@ class Sea {
             if (b <= a) {
                 a = dict[css].max
             }
+            // 终止
             if (this.dom.style[css] == String(b)) {
-                return;
+                break
             }
             let op = a > b ? false : true
             let step = b > 0 ? b / t : a / t
@@ -273,25 +282,37 @@ class Sea {
         }, fps)
         }
     }
-
     // 淡出
-    fadeOut(time, callback) {
-        this.animate({
-            "opacity": 0,
-        }, time, callback)
+    fadeOut(time, callback, box) {
+        if (this.isHidden() === false) {
+            this.animate({
+                "opacity": 0,
+            }, time, () => {
+                if (box === undefined) { this.hide() }
+                if (typeof callback === 'function') { callback() }
+            })
+        }
     }
     // 淡入
     fadeIn(time, callback) {
-        this.animate({
-            "opacity": 1,
-        }, time, callback)
+        if (this.isHidden()) {
+            this.show()
+            this.animate({
+                "opacity": 1,
+            }, time, callback)
+        }
     }
-
-    static find(...args) {
+}
+const Sea = function(select) {
+    return new bigsea(select)
+}
+// 静态方法
+Sea.static = {
+    find(...args) {
         return new this(...args)
-    }
+    },
     // Ajax
-    static Ajax(request) {
+    Ajax(request) {
         let req = {
             url: request.url,
             // data 传对象
@@ -362,9 +383,9 @@ class Sea {
             }
         })
         return promise
-    }
+    },
     // 生成样式 String
-    static css(css, obj) {
+    css(css, obj) {
         // Sea.css('top:hover', {'display':'block', 'cursor':'zoom-in'})
         let s = ''
         for (let key in obj) {
@@ -375,9 +396,9 @@ class Sea {
             s = `${css}{${s}}`
         }
         return s
-    }
+    },
     // 检查 Object
-    static has(obj, path) {
+    has(obj, path) {
         if (obj && path) {
             // Sea.has(obj, 'a.b.c')
             let arr = path.split('.')
@@ -395,24 +416,26 @@ class Sea {
         } else {
             throw "参数错误 Sea.has(obj, 'a.b.c')"
         }
-    }
+    },
     // 弹窗
-    static confirm(msg, callback) {
-        let e = Sea.find('seaConfirm')
+    confirm(msg, callback) {
+        let e = Sea('seaConfirm')
         e.show('flex')
         e.find('btn').removeAttr('style')
         e.find('.msg').dom.innerText = msg
         Sea.confirm.callback = callback
-    }
+    },
     // 提示
-    static alert(msg) {
-        let e = Sea.find('seaConfirm')
+    alert(msg) {
+        let e = Sea('seaConfirm')
         e.show('flex')
         e.find('.no').hide()
         e.find('.msg').dom.innerText = msg
-    }
+    },
 }
-
+Object.keys(Sea.static).forEach(k => {
+    Sea[k] = Sea.static[k]
+})
 // 构建 HTML CSS
 Sea.init = {
     // 弹窗
@@ -493,7 +516,7 @@ Sea.init = {
                 background: rgb(98, 156, 255);
             }
             </style>`.css()
-        Sea.find('head').append(Sea.innerHTML)
+        Sea('head').append(Sea.innerHTML)
         // HTML
         Sea.innerHTML = `<seaConfirm>
             <div class="cont">
@@ -504,9 +527,9 @@ Sea.init = {
                 </div>
             </div>
             </seaConfirm>`.html()
-        Sea.find('body').append(Sea.innerHTML)
+        Sea('body').append(Sea.innerHTML)
         // Event
-        let e = Sea.find('seaConfirm')
+        let e = Sea('seaConfirm')
         let callback = function(bool) {
             e.hide()
             let f = Sea.confirm.callback
@@ -514,7 +537,7 @@ Sea.init = {
                 f(bool)
                 Sea.confirm.callback = undefined
             } else {
-                log("not callback")
+                // log("not callback")
             }
         }
         e.find('.ok').on('click', function() {
@@ -529,7 +552,7 @@ Object.keys(Sea.init).forEach(k => {
     Sea.init[k]()
 })
 
-// Sea.Ajax 帮助
+// Sea.Ajax.help
 Sea.Ajax.help = `// 示例
 Sea.Ajax({
     method: 方法 String 默认"POST"
@@ -549,10 +572,3 @@ cors: 跨域地址 String (url 填自己服务器接口)`
 
 // 其它
 window.eval = undefined
-
-
-// 测试
-window.onload = function() {
-    // Sea.find('body').fadeOut(5)
-    // Sea.find('body').fadeIn()
-}
