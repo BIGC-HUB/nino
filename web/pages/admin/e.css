@@ -37,7 +37,7 @@ a {
 }
 #nav tag:hover {
     color: white;
-    background: rgba(33, 79, 86, 0.23);
+    background: #358693;
 }
 #nav .info {
     box-sizing: border-box;
@@ -50,13 +50,14 @@ a {
     align-items: center;
     padding-left: 36px;
     padding-right: 36px;
+    background: #358693;
 }
-#nav .group {
+#nav .info .group {
     cursor: pointer;
     width: 48px;
     height: 48px;
 }
-#nav .exit {
+#nav .info .exit {
     cursor: pointer;
     width: 45px;
     height: 45px;
