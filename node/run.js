@@ -42,7 +42,6 @@ const Mer = {
             path + "/e.js",
         ]))
         html = html.replace('<!-- nino-css -->', Mer.css([
-            "/ku/pure-min.css",
             "/app.css",
             path + "/e.css",
         ]))

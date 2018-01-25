@@ -1,63 +1,79 @@
-.pure-g {
-    letter-spacing: normal;
+body {
+    display: flex;
+    margin: 0;
+    background:  #f6f6f6;
 }
-
-#top, #nav, #main {
-    position: fixed;
-    overflow: auto;
-    bottom: 0;
-}
-#main {
-    top: 40px;
-    height: calc(100% - 40px);
-    left: 150px;
-    width: calc(100% - 150px);
-    border-style: none;
+a {
+    color: white;
 }
 
 #nav {
-    top: 40px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    width: 300px;
+    height: 100vh;
+    background: #3d8e9b;
+    color: white;
+    font-size: 14px;
+}
+#nav .logo {
+    margin: 50px;
+    width: 200px;
+}
+#nav .kind {
+    margin-bottom: 75px;
+}
+#nav navTitle {
+    display: flex;
+    margin: 30px 0 7px 50px;
+    font-size: 24px;
+}
+#nav tag {
+    display: flex;
+    align-items: center;
+    height: 45px;
+    padding-left: 50px;
+}
+#nav .info {
+    box-sizing: border-box;
+    width: 100%;
+    height: 75px;
+    bottom: 0;
     left: 0;
-    width: 150px;
-    height: 100%;
-    background: #252a3a;
-    text-align: center;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 36px;
+    padding-right: 36px;
 }
-#nav .nav-menu-button {
-    display: block;
-    top: .5em;
-    right: .5em;
-    position: absolute
+#nav .group {
+    cursor: pointer;
+    width: 48px;
+    height: 48px;
 }
-#nav .pure-menu {
-    background: transparent;
-    border: 0;
-    text-align: left
-}
-#nav .pure-menu-link:hover,
-#nav .pure-menu-link:focus {
-    background: #373c5a
-}
-#nav .pure-menu-link {
-    color: #fff;
-    margin-left: .5em
-}
-#nav .pure-menu-heading {
-    border-bottom: 0;
-    font-size: 110%;
-    color: #4b7197
+#nav .exit {
+    cursor: pointer;
+    width: 45px;
+    height: 45px;
 }
 
-#top {
-    top: 0;
-    left: 0;
-    height: 40px;
-    width: 100%;
-    background: #252a3a;
+#main {
+    border: 0;
+    width: calc(100% - 300px);
 }
-#top .logo {
-    width: 150px;
-    height: 100%;
-    border-radius: 0;
-    border-bottom-right-radius:15px;
+
+
+/* scroll */
+#nav::-webkit-scrollbar {
+    width: 6px;
+}
+#nav::-webkit-scrollbar-corner, #nav::-webkit-scrollbar-thumb:window-inactive {
+    background: transparent;
+}
+#nav::-webkit-scrollbar-thumb {
+    background: rgba(33, 79, 86, 0.23);
+    border-radius: 3px;
+}
+#nav::-webkit-scrollbar-track {
+    background: transparent;
 }
