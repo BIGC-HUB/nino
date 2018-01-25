@@ -43,6 +43,8 @@ class bigsea {
     constructor(select) {
         if (typeof select == 'string') {
             this.arr = Array.from(document.querySelectorAll(select))
+        } else if (typeof select == 'object' && select.localName) {
+            this.arr = [select]
         } else {
             this.arr = []
         }
