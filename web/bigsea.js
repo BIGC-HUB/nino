@@ -201,11 +201,7 @@ class bigsea {
     // 判断隐藏
     isHidden() {
         let e = this.dom
-        if (e.hidden) {
-            return true
-        } else if (e.style.display === "none") {
-            return true
-        } else if (e.style.opacity === "0") {
+        if (e.hidden || e.style.opacity === "0" || e.style.display === "none") {
             return true
         } else {
             return false
@@ -237,49 +233,52 @@ class bigsea {
             return res
         }
         let dict = {
-            "opacity": {
-                max: 1,
-                min: 0,
-            },
+            "opacity": 1,
+            "width": {
+                "%": 100,
+                "px": this.dom.offsetWidth,
+            }
         }
         for (let css in obj) {
             let o = parseValue(obj[css])
-            let a = dict[css].min
+            let max = dict[css]
+            if (o.unit) {
+                max = dict[css][o.unit]
+            }
+            let a = 0
             let b = o.value
             if (b <= a) {
-                a = dict[css].max
+                a = max
             }
             // 终止
-            if (this.dom.style[css] == String(b)) {
-                break
-            }
+            if (this.dom.style[css] == String(b)) { break }
             let op = a > b ? false : true
             let step = b > 0 ? b / t : a / t
             let animate = setInterval(function() {
-            let stop = function() {
-                that.css("opacity", String(b) + o.unit)
-                clearInterval(animate)
-                if (typeof callback == 'function') { callback() }
-            }
-            let next = function() {
-                that.css("opacity", String(a) + o.unit)
-            }
-            if (op) {
-                if (a > b) {
-                    stop()
-                } else {
-                    next()
+                let stop = function() {
+                    that.css(css, String(b) + o.unit)
+                    clearInterval(animate)
+                    if (typeof callback == 'function') { callback() }
                 }
-                a += step
-            } else {
-                if (a < b) {
-                    stop()
-                } else {
-                    next()
+                let next = function() {
+                    that.css(css, String(a) + o.unit)
                 }
-                a -= step
-            }
-        }, fps)
+                if (op) {
+                    if (a > b) {
+                        stop()
+                    } else {
+                        next()
+                    }
+                    a += step
+                } else {
+                    if (a < b) {
+                        stop()
+                    } else {
+                        next()
+                    }
+                    a -= step
+                }
+            }, fps)
         }
     }
     // 淡出
