@@ -28,10 +28,14 @@ a {
     font-size: 24px;
 }
 #nav tag {
+    cursor: pointer;
     display: flex;
     align-items: center;
     height: 45px;
     padding-left: 50px;
+}
+#nav tag:hover {
+    background: rgba(33, 79, 86, 0.23);
 }
 #nav .info {
     box-sizing: border-box;
@@ -64,11 +68,11 @@ a {
     background-image: linear-gradient(90deg, rgba(61, 142, 155, .3) 0%, rgba(61, 142, 155, 0) 100%);
 }
 
-
 #main {
     border: 0;
     width: calc(100% - 300px);
 }
+
 /* scroll */
 #nav::-webkit-scrollbar {
     width: 6px;
