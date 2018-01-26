@@ -1,8 +1,5 @@
 class App {
     constructor() {
-        // sessionStorage.a = 1
-        // sessionStorage.b = 2
-        // sessionStorage.c = 3
         Object.keys(sessionStorage).forEach(key => {
             this[key] = JSON.parse(sessionStorage[key])
         })

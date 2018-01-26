@@ -24,7 +24,7 @@ const ensure = function(a, b, message) {
         log(`√　`, b)
     }
 }
-const cut = (n) => {
+const cut = function(n) {
     if (cut.count) {
         cut.count --
         if (cut.count == 1) {
@@ -43,7 +43,7 @@ class bigsea {
     constructor(select) {
         if (typeof select == 'string') {
             this.arr = Array.from(document.querySelectorAll(select))
-        } else if (typeof select == 'object' && select.localName) {
+        } else if (select && select.localName) {
             this.arr = [select]
         } else {
             this.arr = []
@@ -68,54 +68,79 @@ class bigsea {
         return this
     }
     // 事件
-    on(event, callback) {
+    on(name, callback) {
+        let one = [name, callback]
+        if (Array.isArray(this.events)) {
+            this.events.push(one)
+        } else {
+            this.events = [one]
+        }
+        // 绑定
         for (let e of this.arr) {
-            e.addEventListener(event, callback, false)
+            e.addEventListener(name, callback, false)
         }
         return this
     }
+    // 移除事件
+    off() {
+        if (Array.isArray(this.events)) {
+            for (let a of this.events)  {
+                for (let e of this.arr) {
+                    e.removeEventListener(a[0], a[1])
+                }
+            }
+        }
+    }
     // 显示
-    show() {
+    show(str) {
         for (let e of this.arr) {
-            e.hidden = false
+            e.style.display = str || "flex"
         }
         return this
     }
     // 隐藏
     hide() {
         for (let e of this.arr) {
-            e.hidden = true
+            e.style.display = "none"
         }
         return this
     }
+
     // 查找子元素
     find(select) {
         let sea = Sea()
         let arr = []
-        for (let e of this.arr) {
-            Array.from(e.querySelectorAll(select)).forEach(e => {
-                arr.push(e)
-            })
+        if (this.dom) {
+            for (let e of this.arr) {
+                Array.from(e.querySelectorAll(select)).forEach(e => {
+                    arr.push(e)
+                })
+            }
+            sea.arr = arr
+            sea.dom = arr[0]
         }
-        sea.arr = arr
-        sea.dom = arr[0]
         return sea
     }
-    // 选择父元素
-    parent() {
+    // 查找父元素
+    parent(select) {
         let sea = Sea()
-        let arr = [this.dom.parentElement]
-        sea.arr = arr
-        sea.dom = arr[0]
+        let arr = []
+        if (this.dom) {
+            if (select) {
+                arr.push(this.dom.closest(select))
+            } else {
+                arr.push(this.dom.parentElement)
+            }
+            sea.arr = arr
+            sea.dom = arr[0]
+        }
         return sea
     }
-    // 查找祖先元素
-    parents(select) {
-        let sea = Sea()
-        let arr = [this.dom.closest(select)]
-        sea.arr = arr
-        sea.dom = arr[0]
-        return sea
+    // 查找下一个元素
+    next() {
+        if (this.dom) {
+            return Sea(this.dom.nextSibling)
+        }
     }
 
     // 添加类
@@ -307,7 +332,7 @@ class bigsea {
 const Sea = function(select) {
     return new bigsea(select)
 }
-// 静态方法
+// 静态方法 static
 Sea.static = {
     find(...args) {
         return new this(...args)
@@ -421,7 +446,7 @@ Sea.static = {
     // 弹窗
     confirm(msg, callback) {
         let e = Sea('seaConfirm')
-        e.show('flex')
+        e.show()
         e.find('btn').removeAttr('style')
         e.find('.msg').dom.innerText = msg
         Sea.confirm.callback = callback
@@ -429,12 +454,12 @@ Sea.static = {
     // 提示
     alert(msg) {
         let e = Sea('seaConfirm')
-        e.show('flex')
+        e.show()
         e.find('.no').hide()
         e.find('.msg').dom.innerText = msg
     },
 }
-Object.keys(Sea.static).forEach(k => {
+Object.keys(Sea.static).forEach(function(k) {
     Sea[k] = Sea.static[k]
 })
 // 构建 HTML CSS
@@ -549,7 +574,7 @@ Sea.init = {
         })
     },
 }
-Object.keys(Sea.init).forEach(k => {
+Object.keys(Sea.init).forEach(function(k) {
     Sea.init[k]()
 })
 

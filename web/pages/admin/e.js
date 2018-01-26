@@ -7,5 +7,4 @@ tags.on('click', function() {
     Sea('.active-triangle').remove()
     e.append('<span class="active-triangle"></span>')
 })
-
 tags.dom.click()
