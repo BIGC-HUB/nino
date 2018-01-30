@@ -20,7 +20,7 @@ a {
     width: 200px;
 }
 #nav .kind {
-    margin-bottom: 75px;
+    margin-bottom: 150px;
 }
 #nav navTitle {
     display: flex;
@@ -34,10 +34,6 @@ a {
     align-items: center;
     height: 45px;
     padding-left: 50px;
-}
-#nav tag:hover {
-    color: white;
-    background: #358693;
 }
 #nav .info {
     box-sizing: border-box;

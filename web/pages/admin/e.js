@@ -8,3 +8,18 @@ tags.on('click', function() {
     e.append('<span class="active-triangle"></span>')
 })
 tags.dom.click()
+tags.on('mouseover', function() {
+    let e = Sea(this)
+    if (e.hasClass('active')) {
+        //
+    } else {
+        tags.css({
+            color: "",
+            background: "",
+        })
+        e.css({
+            color: "white",
+            background: "#358693",
+        })
+    }
+})

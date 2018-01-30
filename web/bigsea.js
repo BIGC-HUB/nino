@@ -52,14 +52,17 @@ class bigsea {
     }
     // 样式
     css(obj, val) {
-        let arr = this.arr
-        let set = function(k, v) {
-            for (let e of arr) {
-                e.style[k] = v
+        let set = (k, v) => {
+            for (let e of this.arr) {
+                e.style[k] = String(v)
             }
         }
-        if (val && typeof obj === 'string') {
-            set(obj, val)
+        if (typeof obj === 'string') {
+            if (val === undefined) {
+                return window.getComputedStyle(this.dom)[obj]
+            } else {
+                set(obj, val)
+            }
         } else {
             for(let key in obj) {
                 set(key, obj[key])
@@ -67,40 +70,80 @@ class bigsea {
         }
         return this
     }
-    // 事件
-    on(name, callback) {
-        let one = [name, callback]
-        if (Array.isArray(this.events)) {
-            this.events.push(one)
-        } else {
-            this.events = [one]
+    // 事件 (绑定/委托)
+    on(name, select, callback, one) {
+        let off = function(e, arr) {
+            if (Array.isArray(e.sea_event)) {
+                e.sea_event.push(arr)
+            } else {
+                e.sea_event = [arr]
+            }
         }
-        // 绑定
-        for (let e of this.arr) {
-            e.addEventListener(name, callback, false)
-        }
-        return this
-    }
-    // 移除事件
-    off() {
-        if (Array.isArray(this.events)) {
-            for (let a of this.events)  {
-                for (let e of this.arr) {
-                    e.removeEventListener(a[0], a[1])
+        // 参数转换
+        if (callback === undefined) {
+            callback = select
+            // 绑定
+            for (let e of this.arr) {
+                let _callback = function(event) {
+                    callback.call(e, event)
+                    if (one === true) {
+                        e.removeEventListener(name, _callback)
+                    }
                 }
+                e.addEventListener(name, _callback, false)
+                off(e, [name, _callback])
+            }
+        } else {
+            // 委托
+            for (let e of this.arr) {
+                let _callback = function(event) {
+                    for(let dom of this.querySelectorAll(select)) {
+                        if (dom.isSameNode(event.target)) {
+                            // callback.bind(dom)(event)
+                            callback.call(dom, event)
+                            if (one === true) {
+                                e.removeEventListener(name, _callback)
+                            }
+                        }
+                    }
+                }
+                e.addEventListener(name, _callback, false)
+                off(e, [name, _callback])
             }
         }
     }
+    // 一次性事件 (绑定/委托)
+    one(name, select, callback) {
+        this.on(name, select, callback, true)
+    }
+    // 移除事件
+    off() {
+        for (let e of this.arr) {
+            if (Array.isArray(e.sea_event)) {
+                for (let arr of e.sea_event) {
+                    let [name, callback] = arr
+                    e.removeEventListener(name, callback)
+                }
+                e.sea_event = undefined
+            }
+        }
+        return this
+    }
+
     // 显示
     show(str) {
         for (let e of this.arr) {
-            e.style.display = str || "flex"
+            e.style.display = str || e.sea_display || "flex"
         }
         return this
     }
     // 隐藏
     hide() {
         for (let e of this.arr) {
+            let display = window.getComputedStyle(e).display
+            if (display !== 'none') {
+                e.sea_display = display
+            }
             e.style.display = "none"
         }
         return this
@@ -141,6 +184,28 @@ class bigsea {
         if (this.dom) {
             return Sea(this.dom.nextSibling)
         }
+    }
+    // 子元素
+    child() {
+        let sea = Sea()
+        let arr = []
+        for (let e of this.dom.childNodes) {
+            arr.push(e)
+        }
+        sea.arr = arr
+        sea.dom = arr[0]
+        return sea
+    }
+    // 选择
+    eq(i) {
+        let sea = Sea()
+        if (typeof i === 'number') {
+            let end = i + 1 === 0 ? undefined : i + 1
+            let arr = this.arr.slice(i, end)
+            sea.arr = arr
+            sea.dom = arr[0]
+        }
+        return sea
     }
 
     // 添加类
@@ -228,111 +293,142 @@ class bigsea {
     // 判断隐藏
     isHidden() {
         let e = this.dom
-        if (e.hidden || e.style.opacity === "0" || e.style.display === "none") {
+        let style = window.getComputedStyle(e)
+        if (e.hidden || style.opacity === "0" || style.display === "none") {
             return true
         } else {
             return false
         }
     }
 
+    // 点击
+    click() {
+        this.dom.click()
+    }
+    // 焦点
+    focus() {
+        this.dom.focus()
+    }
+
     // 动画
-    animate(obj, time, callback) {
+    animate(obj, time, callback, before) {
         let that = this
-        let fps = 60
-        let s = time || 1
-        let t = s * 1000 / fps
-        let parseValue = function(val) {
-            let res = {
-                value: null,
-                unit: '',
+        if (that.dom.sea_animating) {
+            log('动画未完成')
+        } else {
+            that.dom.sea_animating = true
+            if (typeof before == 'function') { before() }
+            let fps = 60
+            let s = time || 0.4
+            let t = s * 1000 / fps
+            let parseValue = function(val) {
+                let res = {
+                    value: null,
+                    unit: '',
+                }
+                for(var i = 0; i < val.length; i++) {
+                    let e = val[i]
+                    if (!/\d|\./.test(e)) {
+                        res.value = Number(val.slice(0, i))
+                        res.unit = val.slice(i)
+                        break
+                    }
+                }
+                if (res.value == null) {
+                    res.value = Number(val)
+                }
+                return res
             }
-            for(var i = 0; i < val.length; i++) {
-                let e = val[i]
-                if (!/\d|\./.test(e)) {
-                    res.value = Number(val.slice(0, i))
-                    res.unit = val.slice(i)
+            let dict = {
+                "opacity": 1,
+                "width": {
+                    "%": 100,
+                    "px": that.dom.offsetWidth,
+                },
+            }
+            for (let key in obj) {
+                let o = parseValue(obj[key])
+                let max = dict[key]
+                if (o.unit) {
+                    max = dict[key][o.unit]
+                }
+                let a = 0
+                let b = o.value
+                if (b <= a) {
+                    a = max
+                }
+                // 终止
+                if (window.getComputedStyle(that.dom)[key] == String(b)) {
+                    that.dom.sea_animating = false
                     break
                 }
-            }
-            if (res.value == null) {
-                res.value = Number(val)
-            }
-            return res
-        }
-        let dict = {
-            "opacity": 1,
-            "width": {
-                "%": 100,
-                "px": this.dom.offsetWidth,
-            }
-        }
-        for (let css in obj) {
-            let o = parseValue(obj[css])
-            let max = dict[css]
-            if (o.unit) {
-                max = dict[css][o.unit]
-            }
-            let a = 0
-            let b = o.value
-            if (b <= a) {
-                a = max
-            }
-            // 终止
-            if (this.dom.style[css] == String(b)) { break }
-            let op = a > b ? false : true
-            let step = b > 0 ? b / t : a / t
-            let animate = setInterval(function() {
-                let stop = function() {
-                    that.css(css, String(b) + o.unit)
-                    clearInterval(animate)
-                    if (typeof callback == 'function') { callback() }
-                }
-                let next = function() {
-                    that.css(css, String(a) + o.unit)
-                }
-                if (op) {
-                    if (a > b) {
-                        stop()
-                    } else {
-                        next()
+                let op = a > b ? false : true
+                let step = b > 0 ? b / t : a / t
+                let animate_id = setInterval(function() {
+                    let stop = function() {
+                        that.css(key, String(b) + o.unit)
+                        clearInterval(animate_id)
+                        if (typeof callback == 'function') { callback() }
+                        that.dom.sea_animating = false
                     }
-                    a += step
-                } else {
-                    if (a < b) {
-                        stop()
-                    } else {
-                        next()
+                    let next = function() {
+                        that.css(key, String(a) + o.unit)
                     }
-                    a -= step
-                }
-            }, fps)
-        }
-    }
-    // 淡出
-    fadeOut(time, callback, box) {
-        if (this.isHidden() === false) {
-            this.animate({
-                "opacity": 0,
-            }, time, () => {
-                if (box === undefined) { this.hide() }
-                if (typeof callback === 'function') { callback() }
-            })
+                    if (op) {
+                        if (a > b) {
+                            stop()
+                        } else {
+                            next()
+                        }
+                        a += step
+                    } else {
+                        if (a < b) {
+                            stop()
+                        } else {
+                            next()
+                        }
+                        a -= step
+                    }
+                }, fps)
+            }
         }
     }
     // 淡入
-    fadeIn(time, callback) {
-        if (this.isHidden()) {
-            this.show()
-            this.animate({
+    fadeIn(str, time, callback) {
+        let that = this
+        // 参数转换
+        if (typeof str === 'number' && callback === undefined) {
+            callback = time
+            time = str
+            str = undefined
+        }
+        if (that.isHidden()) {
+            that.animate({
                 "opacity": 1,
-            }, time, callback)
+            }, time, callback, function() {
+                that.css("opacity", 0)
+                that.show(str)
+            })
+        }
+    }
+    // 淡出
+    fadeOut(time, callback, show) {
+        let that = this
+        if (that.isHidden() === false) {
+            that.animate({
+                "opacity": 0,
+            }, time, function() {
+                if (typeof callback === 'function') { callback() }
+                if (show === undefined) { that.hide() }
+            })
         }
     }
 }
+// Sea
 const Sea = function(select) {
     return new bigsea(select)
 }
-// 静态方法 static
+// 静态方法 Sea
 Sea.static = {
     find(...args) {
         return new this(...args)
@@ -577,7 +673,6 @@ Sea.init = {
 Object.keys(Sea.init).forEach(function(k) {
     Sea.init[k]()
 })
-
 // Sea.Ajax.help
 Sea.Ajax.help = `// 示例
 Sea.Ajax({
@@ -598,3 +693,5 @@ cors: 跨域地址 String (url 填自己服务器接口)`
 
 // 其它
 window.eval = undefined
+window.$ = window.jQuery ? $ : Sea
+;
