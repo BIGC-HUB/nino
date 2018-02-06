@@ -19,6 +19,8 @@ sign.find('.sign-in').on('click', function() {
             let data = JSON.parse(res)
             if (data.code == 1000) {
                 db.$set('token', data.token)
+                db.$set('user', data.user)
+                db.$set('phone', phone.value)
                 window.location = '/pages/welcome'
             } else {
                 Mer.signing = false
