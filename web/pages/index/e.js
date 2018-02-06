@@ -1,13 +1,12 @@
 let sign = Sea('#sign')
 let Mer = {
     signing: false,
-    ip: 'http://192.168.5.130:1337',
 }
 sign.find('.sign-in').on('click', function() {
     let phone = sign.find('.phone').dom
     let password = sign.find('.password').dom
     let options = {
-        url: Mer.ip + '/web/user/login',
+        url: config.server + '/web/user/login',
         data: {
             phone: phone.value,
             password: password.value,

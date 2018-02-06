@@ -43,7 +43,7 @@ class bigsea {
     constructor(select) {
         if (typeof select == 'string') {
             this.arr = Array.from(document.querySelectorAll(select))
-        } else if (select && select.localName) {
+        } else if (select && select.addEventListener) {
             this.arr = [select]
         } else {
             this.arr = []
@@ -446,17 +446,9 @@ Sea.static = {
             cors: request.cors,
             hash: request.hash,
         }
-        let query = function(obj) {
-            let arr = []
-            for(let key in obj) {
-                let val = obj[key]
-                arr.push([key, val].join('='))
-            }
-            return '?' + arr.join('&')
-        }
         // search
         if (Object.keys(req.search).length) {
-            req.url += query(req.search)
+            req.url += this.query(req.search)
         }
         // hash
         if (req.hash) {
@@ -477,11 +469,11 @@ Sea.static = {
         let promise = new Promise(function(success, fail) {
             let r = new XMLHttpRequest()
             r.open(req.method, req.url, true)
-            for (let key in req.header) {
-                r.setRequestHeader(key, req.header[key])
-            }
             if (!req.header['Content-Type']) {
                 r.setRequestHeader('Content-Type', 'application/json')
+            }
+            for (let key in req.header) {
+                r.setRequestHeader(key, req.header[key])
             }
             r.onreadystatechange = function() {
                 if (r.readyState === 4) {
@@ -518,6 +510,28 @@ Sea.static = {
             s = `${css}{${s}}`
         }
         return s
+    },
+    // 生成 query
+    query(obj) {
+        if (typeof obj === 'string') {
+            let i = obj.indexOf('?')
+            if (i !== -1) {
+                obj = obj.slice(i + 1)
+            }
+            let result = {}
+            for(let e of obj.split('&')) {
+                let a = e.split('=')
+                result[a[0]] = a[1]
+            }
+            return result
+        } else {
+            let arr = []
+            for(let key in obj) {
+                let val = obj[key]
+                arr.push([key, val].join('='))
+            }
+            return '?' + arr.join('&')
+        }
     },
     // 检查 Object
     has(obj, path) {
@@ -602,7 +616,6 @@ Sea.init = {
                 overflow-y: auto;
             }
             seaConfirm .btns {
-                box-shadow: 0 4px 7px rgba(0,0,0,0.8) inset;
                 box-sizing: border-box;
                 display: flex;
                 justify-content: center;
@@ -620,7 +633,7 @@ Sea.init = {
                 justify-content: center;
                 align-items: center;
                 margin: .5rem;
-                border: 1.5px solid #C8C8C8;
+                border-style: none;
                 border-radius: .25rem;
                 width: 8rem;
                 height: 3rem;

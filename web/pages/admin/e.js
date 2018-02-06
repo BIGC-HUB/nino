@@ -23,3 +23,23 @@ tags.on('mouseover', function() {
         })
     }
 })
+
+Sea('.info .exit').on('click', function() {
+    Sea.Ajax({
+        url: config.server + '/web/user/logout',
+        header: {
+            "authorization": 'ninoart' + db.token,
+        },
+    }).then(res => {
+        log(res)
+    })
+    // Sea.Ajax({
+    //     url: config.server + '/web/user/token',
+    //     headers: {
+    //         authorization: 'ninoart' + db.token,
+    //     },
+    // }).then(res => {
+    //     log(res)
+    // })
+})
+// Sea('.info .exit').click()

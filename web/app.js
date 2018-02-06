@@ -33,3 +33,7 @@ class App {
 
 }
 const db = App.new()
+
+const config = {
+    server: 'http://192.168.5.130:1337',
+}
