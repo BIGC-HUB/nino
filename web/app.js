@@ -43,17 +43,6 @@ const config = {
     server: 'http://192.168.5.130:1337',
 }
 // 验证登陆
-Sea.Ajax({
-    url: config.server + '/qa/list',
-    header: {
-        authorization: 'ninoart' + db.token,
-    },
-    data: {
-        page: 0,
-    },
-}).then(res => {
-    let data = JSON.parse(res)
-    if (Number(data.code) == 403 && location.pathname !== '/') {
-        location.replace('/')
-    }
-})
+if (!db.token && location.pathname !== '/') {
+    location.replace('/')
+}

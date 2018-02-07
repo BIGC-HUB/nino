@@ -228,7 +228,7 @@ class bigsea {
     }
     // 判断包含类
     hasClass(str) {
-        this.dom.classList.contains(str)
+        return this.dom.classList.contains(str)
     }
 
     // 获取或设置 文本
