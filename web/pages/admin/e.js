@@ -149,13 +149,13 @@ Sea('.info .exit').on('click', function() {
 // })
 
 // 查看系列课 列表
-Sea.Ajax({
-    url: config.server + '/course/list',
-    header: {authorization: 'ninoart' + db.token},
-}).then(res => {
-    let data = JSON.parse(res)
-    log('查看系列课 列表', data)
-})
+// Sea.Ajax({
+//     url: config.server + '/course/list',
+//     header: {authorization: 'ninoart' + db.token},
+// }).then(res => {
+//     let data = JSON.parse(res)
+//     log('查看系列课 列表', data)
+// })
 
 // 查看系列课 课程
 // Sea.Ajax({
@@ -257,3 +257,121 @@ Sea.Ajax({
 //     let data = JSON.parse(res)
 //     log(data)
 // })
+
+// 获取 News 类别
+Sea.Ajax({
+    url: config.server + '/news/home',
+    header: {authorization: 'ninoart' + db.token},
+}).then(res => {
+    let data = JSON.parse(res)
+    log('获取 News 类别', data)
+})
+
+// 获取 News 列表
+// Sea.Ajax({
+//     url: config.server + '/news/list',
+//     header: {authorization: 'ninoart' + db.token},
+//     data: {
+//         topic: "艺术分享",
+//     },
+// }).then(res => {
+//     let data = JSON.parse(res)
+//     log('获取 News 列表', data)
+// })
+
+// 增加 News 类别标签
+// Sea.Ajax({
+//     url: config.server + '/web/news/tag',
+//     header: {authorization: 'ninoart' + db.token},
+//     data: {
+//         topic: "测试标签",
+//         img: "",
+//     },
+// }).then(res => {
+//     let data = JSON.parse(res)
+//     log(data)
+// })
+
+// 增加 News 内容
+// Sea.Ajax({
+//     url: config.server + '/web/news/add',
+//     header: {authorization: 'ninoart' + db.token},
+//     data: {
+//         topic: "测试标签",
+//         data: JSON.stringify({
+//             // 展示模板类型 1 2
+//             type: 2,
+//             // 类型
+//             category: "优秀作业",
+//             // 文章标题
+//             title: "秋玉老师带你进入国画之旅，慢慢听她讲说创作笔下的故事",
+//             // 文章头图片
+//             picture: "http://p2bg3pq6o.bkt.clouddn.com/news/testMask2.jpg",
+//             // 文章头视频路径 有视频数据时必填
+//             vedio: "http://p2bg3pq6o.bkt.clouddn.com/news/testwebwxgetvideo",
+//             // 文章体内容
+//             content: [{
+//                 // 0小标题 1文本内容 2未知 3用户数据 4课程数据
+//                 type: 0,
+//                 // 文本数据
+//                 content: "如何开始绘画"
+//
+//                 // data: JSON.stringify({}),
+//             }, {
+//                 type: 3,
+//                 // 用户、课程需要的数据体 [3,4] 必填
+//                 data: {
+//                     id: "5a659e4048172f523ff7abf4",
+//                     nickname: "秋玉",
+//                     headPortrait: "http://p2bg3pq6o.bkt.clouddn.com/news/testMask3.jpg"
+//                 }
+//             }],
+//         }),
+//     },
+// }).then(res => {
+//     let data = JSON.parse(res)
+//     log(data)
+// })
+
+// 获取 News 单条内容
+// Sea.Ajax({
+//     url: config.server + '/news/find',
+//     header: {authorization: 'ninoart' + db.token},
+//     data: {
+//         // 文章id
+//         id: "5a7bfdae2558d7d82f5fc247",
+//     },
+// }).then(res => {
+//     let data = JSON.parse(res)
+//     log(data)
+// })
+
+// 修改 News 类别标签数据
+// Sea.Ajax({
+//     url: config.server + '/web/news/tag/change',
+//     header: {authorization: 'ninoart' + db.token},
+//     data: {
+//         // 旧 类别名称 必填
+//         name: "测试标签",
+//         topic: "测试标签2",
+//         img: "",
+//     },
+// }).then(res => {
+//     let data = JSON.parse(res)
+//     log(data)
+// })
+
+// 删除 News 类别标签 或 数据
+Sea.Ajax({
+    url: config.server + '/web/news/delete',
+    header: {authorization: 'ninoart' + db.token},
+    data: {
+        // 类别名称 必填
+        name: "测试标签",
+        // 文章id 删除
+        // newsid: "5a791b8de9f174061de58e63",
+    },
+}).then(res => {
+    let data = JSON.parse(res)
+    log(data)
+})

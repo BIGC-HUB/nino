@@ -97,8 +97,9 @@ class bigsea {
             // 委托
             for (let e of this.arr) {
                 let _callback = function(event) {
+                    let parent = Sea(event.target).parent(select).dom
                     for(let dom of this.querySelectorAll(select)) {
-                        if (dom.isSameNode(event.target)) {
+                        if (dom.isSameNode(parent)) {
                             // callback.bind(dom)(event)
                             callback.call(dom, event)
                             if (one === true) {
@@ -469,11 +470,11 @@ Sea.static = {
         let promise = new Promise(function(success, fail) {
             let r = new XMLHttpRequest()
             r.open(req.method, req.url, true)
-            if (!req.header['Content-Type']) {
-                r.setRequestHeader('Content-Type', 'application/json')
-            }
             for (let key in req.header) {
                 r.setRequestHeader(key, req.header[key])
+            }
+            if (!req.header['Content-Type']) {
+                r.setRequestHeader('Content-Type', 'application/json')
             }
             r.onreadystatechange = function() {
                 if (r.readyState === 4) {
@@ -514,11 +515,13 @@ Sea.static = {
     // 生成 query
     query(obj) {
         if (typeof obj === 'string') {
+            let result = {}
             let i = obj.indexOf('?')
-            if (i !== -1) {
+            if (i === -1) {
+                return result
+            } else {
                 obj = obj.slice(i + 1)
             }
-            let result = {}
             for(let e of obj.split('&')) {
                 let a = e.split('=')
                 result[a[0]] = a[1]
@@ -562,11 +565,12 @@ Sea.static = {
         Sea.confirm.callback = callback
     },
     // 提示
-    alert(msg) {
+    alert(msg, callback) {
         let e = Sea('seaConfirm')
         e.show()
         e.find('.no').hide()
         e.find('.msg').dom.innerText = msg
+        Sea.confirm.callback = callback
     },
 }
 Object.keys(Sea.static).forEach(function(k) {
