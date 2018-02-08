@@ -148,63 +148,112 @@ Sea('.info .exit').on('click', function() {
 //     log(data)
 // })
 
-
 // 查看系列课 列表
-// Sea.Ajax({
-//     url: config.server + '/course/list',
-//     header: {authorization: 'ninoart' + db.token},
-// }).then(res => {
-//     let data = JSON.parse(res)
-//     log(data)
-// })
+Sea.Ajax({
+    url: config.server + '/course/list',
+    header: {authorization: 'ninoart' + db.token},
+}).then(res => {
+    let data = JSON.parse(res)
+    log('查看系列课 列表', data)
+})
+
 // 查看系列课 课程
 // Sea.Ajax({
 //     url: config.server + '/course/find',
 //     header: {authorization: 'ninoart' + db.token},
 //     data: {
 //         // 课程
-//         courid: "5a74163f355cec562b414c08",
+//         // courid: "5a7bb35f12fc3b5a14c2f0d4",
 //         // 系列课 必填
-//         seriesid: "5a74163f355cec562b414c05",
+//         seriesid: "5a7ac78d89d1d33a3165a4ed",
+//     },
+// }).then(res => {
+//     let data = JSON.parse(res)
+//     log('查看系列课 课程', data)
+// })
+
+// 课程、系列课、点评课 - 增加 删除
+// let op = {
+//     创建课程: 1,
+//     删除课程: 3,
+//     //
+//     创建点评课: 2,
+//     删除点评课: 4,
+//     //
+//     删除系列课: 5,
+//     删除期: 6,
+//     删除班级: 7,
+// }
+// Sea.Ajax({
+//     url: config.server + '/course/operation',
+//     header: {authorization: 'ninoart' + db.token},
+//     data: {
+//         type: op.创建课程,
+//         // 系列课id 必填
+//         id: "5a7ac78d89d1d33a3165a4ed",
+//         // 老师id [1,2,3,4] 必填
+//         teacher: "5a659e4048172f523ff7abf4",
+//         // 课程名称 [1] 必填
+//         courName: "测试的课",
+//         // 课程id [2,3,4] 必填
+//         courid: "",
+//         // 期 [6] 必填
+//         termNumber: "",
+//         // 班级 [7] 必填
+//         classNumber: "",
 //     },
 // }).then(res => {
 //     let data = JSON.parse(res)
 //     log(data)
 // })
-// 课程、系列课、点评课 - 增加 删除
-let op = {
-    创建课程: 1,
-    删除课程: 3,
-    //
-    创建点评课: 2,
-    删除点评课: 4,
-    //
-    删除系列课: 5,
-    删除期: 6,
-    删除班级: 7,
-}
-Sea.Ajax({
-    url: config.server + '/course/operation',
-    header: {authorization: 'ninoart' + db.token},
-    data: {
-        type: op.创建课程,
-        // 系列课id 必填
-        id: "5a7ac78d89d1d33a3165a4ed",
-        // 老师id [1,2,3,4] 必填
-        teacher: "5a659e4048172f523ff7abf4",
-        // 课程名称 [1] 必填
-        courName: "测试的课",
-        // 课程id [2,3,4] 必填
-        // courid: "",
-        // 期 [6] 必填
-        // termNumber: "",
-        // 班级 [7] 必填
-        // classNumber: "",
-    },
-}).then(res => {
-    let data = JSON.parse(res)
-    log(data)
-})
 
-// "POST /course/modify":{ controller: "CourseController", action: "modifyCourse"},
-// "POST /course/operation":{ controller: "CourseController", action: "deletCourse"},
+// 课程、系列课 - 审核
+// Sea.Ajax({
+//     url: config.server + '/web/course/verify',
+//     header: {authorization: 'ninoart' + db.token},
+//     data: {
+//         // 1系列课 2课程
+//         type: 1,
+//         // id
+//         id: "5a7ac78d89d1d33a3165a4ed",
+//         // 审核状态 1审核中 2上架 3下架
+//         status: 3,
+//     },
+// }).then(res => {
+//     let data = JSON.parse(res)
+//     log(data)
+// })
+
+// 课程、系列课、点评课 - 修改
+// Sea.Ajax({
+//     url: config.server + '/course/modify',
+//     header: {authorization: 'ninoart' + db.token},
+//     data: {
+//         // 1系列课 2 3点评课
+//         type: 2,
+//         // id
+//         id: "5a7bb35f12fc3b5a14c2f0d4",
+//         // 价格
+//         price: 999,
+//         // 开始时间 [1] 必填
+//         starttime: 1518058000762,
+//     },
+// }).then(res => {
+//     let data = JSON.parse(res)
+//     log(data)
+// })
+
+// 系列课班级 - 创建
+// Sea.Ajax({
+//     url: config.server + '/web/course/newtc',
+//     header: {authorization: 'ninoart' + db.token},
+//     data: {
+//         // 系列课id
+//         id: "5a7ac78d89d1d33a3165a4ed",
+//         // 新建班级数 默认1
+//         class: 4,
+//     },
+// }).then(res => {
+//     let data = JSON.parse(res)
+//     log(data)
+// })
