@@ -35,6 +35,7 @@ sign.find('.sign-in').on('click', function() {
                 sign.find('.tips').text("正在登陆")
             } else {
                 Mer.signing = true
+                // log(JSON.stringify(options.data))
                 Sea.Ajax(options)
             }
         } else {

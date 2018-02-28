@@ -34,6 +34,7 @@ Sea('.info .exit').on('click', function() {
             authorization: 'ninoart' + db.token,
         },
     }).then(res => {
+        log(res)
         let data = JSON.parse(res)
         if (Number(data.code) == 1000) {
             db.$clear()
@@ -259,13 +260,13 @@ Sea('.info .exit').on('click', function() {
 // })
 
 // 获取 News 类别
-Sea.Ajax({
-    url: config.server + '/news/home',
-    header: {authorization: 'ninoart' + db.token},
-}).then(res => {
-    let data = JSON.parse(res)
-    log('获取 News 类别', data)
-})
+// Sea.Ajax({
+//     url: config.server + '/news/home',
+//     header: {authorization: 'ninoart' + db.token},
+// }).then(res => {
+//     let data = JSON.parse(res)
+//     log('获取 News 类别', data)
+// })
 
 // 获取 News 列表
 // Sea.Ajax({
@@ -362,16 +363,16 @@ Sea.Ajax({
 // })
 
 // 删除 News 类别标签 或 数据
-Sea.Ajax({
-    url: config.server + '/web/news/delete',
-    header: {authorization: 'ninoart' + db.token},
-    data: {
-        // 类别名称 必填
-        name: "测试标签",
-        // 文章id 删除
-        // newsid: "5a791b8de9f174061de58e63",
-    },
-}).then(res => {
-    let data = JSON.parse(res)
-    log(data)
-})
+// Sea.Ajax({
+//     url: config.server + '/web/news/delete',
+//     header: {authorization: 'ninoart' + db.token},
+//     data: {
+//         // 类别名称 必填
+//         name: "测试标签",
+//         // 文章id 删除
+//         // newsid: "5a791b8de9f174061de58e63",
+//     },
+// }).then(res => {
+//     let data = JSON.parse(res)
+//     log(data)
+// })

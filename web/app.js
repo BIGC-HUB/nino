@@ -40,7 +40,8 @@ class App {
 }
 const db = App.new()
 const config = {
-    server: 'http://192.168.5.130:1337',
+    server: 'http://wxapp.ucloudtech.com:1337',
+    // server: 'http://192.168.5.131:1337',
 }
 // 验证登陆
 if (!db.token && location.pathname !== '/') {
