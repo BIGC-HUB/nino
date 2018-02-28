@@ -1,6 +1,6 @@
 body {
     display: flex;
-    background:  #f6f6f6;
+    background: #f2f6f7;
 }
 a {
     color: white;
@@ -16,8 +16,9 @@ a {
     font-size: 14px;
 }
 #nav .logo {
-    margin: 32px;
-    width: 192px;
+    padding: 32px;
+    width: 100%;
+    box-sizing: border-box;
 }
 #nav navTitle {
     display: flex;
@@ -78,7 +79,7 @@ a {
 #nav .shadow {
     position: fixed;
     top: 0;
-    left: 256px;
+    left: 254.5px;
     width: 8px;
     height: 100%;
     background-image: linear-gradient(90deg, rgba(61, 142, 155, .3) 0%, rgba(61, 142, 155, 0) 100%);
@@ -111,10 +112,30 @@ a {
     border-radius: 10px;
     background-color: #2b7885;
 }
+#nav .copyright {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+    position: fixed;
+    bottom: 0;
+    left: 256px;
+    width: calc(100% - 256px);
+    height: 121px;
+    font-size: 14px;
+    color: rgba(0, 0, 0, 0.45);
+}
+#nav .copyright .btn {
+    margin-bottom: 8px;
+}
+#nav .copyright .btn text {
+    margin: 0 40px;
+}
 #main {
     border: 0;
     width: calc(100% - 300px);
-    margin-top: 64px;
+    margin: 118px 24px 121px 24px;
 }
 
 /* scroll */
