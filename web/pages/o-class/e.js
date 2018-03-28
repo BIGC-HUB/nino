@@ -6,6 +6,8 @@ let course = {
         // ["创作思维课", "大宝,虫虫", "20", '否', courseDel],
     ],
 }
+// 渲染
+Sea('sea.table.course').table(course)
 // 添加
 Sea('page').on('mousedown', '.add', function() {
     let that = Sea(this)
@@ -20,7 +22,6 @@ Sea('page').on('mousedown', '.add', function() {
         let one = arr[i]
         if (one.val() === '') {
             one.tooltip('不能为空', 'topLeft')
-            break
             return;
         } else {
             arr[i] = one.val()
@@ -33,44 +34,54 @@ Sea('page').on('mousedown', '.add', function() {
     course.tbody.push(arr)
     Sea('sea.table.course').table(course)
 })
-
 // 删除
 Sea('sea.table.course').on('mousedown', '.del', function(e, i) {
     course.tbody.splice(i, 1)
     Sea('sea.table.course').table(course)
 })
-
-Sea('sea.table.course').table(course)
-
-let test = function() {
-    Sea.Ajax({
+// 提交
+Sea('page').on('mousedown', '.submit', function() {
+    let e = Sea('page')
+    let seriesname = e.find('.seriesname')
+    let syllabus = e.find('.syllabus')
+    let price = e.find('.price')
+    for (let one of [seriesname, syllabus, price]) {
+        if (one.val() === '') {
+            one.tooltip('不能为空', 'topLeft')
+            return;
+        }
+    }
+    let icon = 'https://bigc.cc/mer/img/note.png'
+    let data = {
         url: config.server + '/web/series/create',
         header: {authorization: 'ninoart' + db.token},
         data: {
             // 系列课名称
-            seriesname: 'test4',
+            seriesname: seriesname.val(),
             // 系列课大纲
-            syllabus: 'test',
+            syllabus: syllabus.val(),
             // 系列课价格
-            price: 200,
+            price: price.val(),
             // 系列课封面图片
-            icon: 'https://i8.mifile.cn/b2c-mimall-media/0147b093d6c05ca0aeef15b35526532d.jpg',
+            icon: icon,
             // 系列课下正课列表
-            course: [
-                {
-                    // 课程名称
-                    courName: 'test',
-                    // 老师 id
-                    teacher: "5a9797fc718445d775e53418",
-                    // 老师简介
-                    introduction: 'test',
-                    // 是否有点频课
-                    hasReview: true,
-                },
-            ],
+            course: [],
         },
-    }).then(res => {
+    }
+    for (let cor of course.tbody) {
+        data.data.course.push({
+            // 课程名称
+            courName: cor[0],
+            // 老师 id
+            teacher: cor[1],
+            // 老师简介
+            introduction: cor[2],
+            // 是否有点频课
+            hasReview: cor[3] === '是' ? true : false,
+        })
+    }
+    Sea.Ajax(data).then(res => {
         let data = JSON.parse(res)
-        log(data)
+        Sea.alert(data.msg)
     })
-}
+})
