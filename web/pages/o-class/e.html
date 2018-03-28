@@ -27,14 +27,46 @@
     </div>
     <div class="box">
         <text class="box-left">系列课封面图片：</text>
+        <sea class="upload" accept="image/*" multiple></sea>
+    </div>
+    <hr>
+    <div class="box">
+        <text class="box-left">课程名称：</text>
         <sea  class="box-right group">
-            <input type="text" name="" value="">
+            <input class="courName">
+        </sea>
+    </div>
+    <div class="box">
+        <text class="box-left">老师id：</text>
+        <sea  class="box-right group">
+            <input class="teacher">
+        </sea>
+    </div>
+    <div class="box">
+        <text class="box-left">老师简介：</text>
+        <sea  class="box-right group">
+            <textarea class="introduction" name="name"></textarea>
+        </sea>
+    </div>
+    <div class="box">
+        <text class="box-left">是否有点评课：</text>
+        <sea  class="box-right group">
+            <input class="hasReview" placeholder="是或否">
         </sea>
     </div>
     <div class="box">
         <text class="box-left">系列课下正课列表：</text>
-        <sea  class="btn">添加正课</sea>
+        <sea  class="btn add">添加正课</sea>
     </div>
+    <div class="box">
+        <sea class="table course">
+            <table></table>
+        </sea>
+    </div>
+    <div class="box">
+        <sea class="btn">创建系列课</sea>
+    </div>
+
 </page>
     <!-- nino-js -->
 </body>

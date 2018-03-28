@@ -41,8 +41,8 @@ const Mer = {
         })
         html = html.replace('<!-- nino-js -->',  Mer.js([
             "/bigsea.js",
-            "/bigsea_ui.js",
         ].concat(arr_js).concat([
+            "/bigsea_ui.js",
             "/app.js",
             path + "/e.js",
         ])))
