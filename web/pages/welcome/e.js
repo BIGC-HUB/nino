@@ -1,5 +1,4 @@
-Sea('#welcome .speed').animate({
-    width: "101%"
-}, 0.5, function() {
-    location = '/pages/admin'
+Sea('#welcome .speed').on('animationend', () => {
+    window.location = '/pages/admin'
 })
+Sea('#welcome .speed').addClass('animate-width')

@@ -1,0 +1,48 @@
+/* 输入框 */
+input, textarea {
+    -webkit-appearance: none;
+}
+
+input, textarea {
+    position: relative;
+    display: inline-flex;
+    padding: .25rem 0.625rem;
+    width: 100%;
+    height: 2rem;
+    font-size: 0.875rem;
+    line-height: 1.5rem;
+    color: rgba(0, 0, 0, 0.65);
+    background-color: #fff;
+    border: 0.0625rem solid var(--primary-border);
+    border-radius: .25rem;
+    transition: all .3s;
+    outline: 0;
+}
+input:hover, textarea:hover {
+    border-color: var(--primary-hover);
+}
+input:focus, textarea:focus {
+    border-color: var(--primary-active);
+    outline: 0;
+    -webkit-box-shadow: 0 0 4px 2px rgba(24, 144, 255, 0.2);
+    box-shadow: 0 0 4px 2px rgba(24, 144, 255, 0.2);
+}
+input::-moz-placeholder, textarea::-moz-placeholder {
+  color: #bfbfbf;
+  opacity: 1;
+}
+input:-ms-input-placeholder, textarea:-ms-input-placeholder {
+  color: #bfbfbf;
+}
+input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {
+  color: #bfbfbf;
+}
+
+textarea {
+    width: 100%;
+    height: auto;
+    resize: vertical;
+    vertical-align: bottom;
+    min-height: 4rem;
+    height: 10rem;
+}

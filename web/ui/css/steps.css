@@ -1,0 +1,95 @@
+sea.steps {
+    display: flex;
+    overflow: hidden;
+    justify-content: space-between;
+}
+
+sea.steps .icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    border: 1px solid rgba(0, 0, 0, 0.25);
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    margin-right: 8px;
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+sea.steps > .item {
+    display: inline-flex;
+    white-space: nowrap;
+    /* flex: 1; */
+    z-index: 1;
+    background: #fff;
+}
+sea.steps > .item:not(:first-child) {
+    padding-left: 16px;
+    padding-right: 16px;
+}
+sea.steps > .item .title {
+    font-size: 16px;
+    color: rgba(0, 0, 0, 0.65);
+    display: inline-block;
+    padding-right: 16px;
+    position: relative;
+    line-height: 32px;
+}
+sea.steps > .item .title:after {
+    content: '';
+    height: 1px;
+    width: 100vw;
+    background: #e8e8e8;
+    position: absolute;
+    top: 16px;
+    left: 100%;
+}
+sea.steps > .item .description {
+    font-size: 14px;
+    color: rgba(0, 0, 0, 0.45);
+}
+sea.steps > .item:last-child .title:after {
+    display: none;
+}
+
+sea.steps > .finish .icon {
+    color: #1890ff;
+    border-color: #1890ff;
+    background-color: #fff;
+}
+sea.steps > .finish .title:after {
+    background-color: #1890ff;
+}
+
+sea.steps > .process .icon {
+    background-color: #1890ff;
+    border-color: #1890ff;
+    color: #fff;
+}
+sea.steps > .process .title {
+    color: rgba(0, 0, 0, 0.85);
+    font-weight: 500;
+}
+
+sea.steps > .wait .icon {
+    color: rgba(0, 0, 0, 0.25);
+    border-color: rgba(0, 0, 0, 0.25);
+    background-color: #fff;
+}
+sea.steps > .wait .title {
+    color: rgba(0, 0, 0, 0.45);
+}
+
+sea.steps > .error .icon {
+    color: #f5222d;
+    border-color: #f5222d;
+    background-color: #fff;
+}
+sea.steps > .error .title {
+    color: #f5222d;
+    font-weight: 500;
+}
+sea.steps > .error .description {
+    color: #f5222d;
+}

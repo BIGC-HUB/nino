@@ -36,15 +36,23 @@ const Mer = {
     },
     initHTML(path) {
         let html = fs.readFileSync(`web${path}/e.html`, 'utf8').replace(/>(\s+)</img, '><')
+        let arr_js = fs.readdirSync('./web/ui/js').map(function(e) {
+            return '/ui/js/' + e
+        })
         html = html.replace('<!-- nino-js -->',  Mer.js([
             "/bigsea.js",
+            "/bigsea_ui.js",
             "/app.js",
             path + "/e.js",
-        ]))
+        ].concat(arr_js)))
+
+        let arr_css = fs.readdirSync('./web/ui/css').map(function(e) {
+            return '/ui/css/' + e
+        })
         html = html.replace('<!-- nino-css -->', Mer.css([
             "/app.css",
             path + "/e.css",
-        ]))
+        ].concat(arr_css)))
         return html
     },
 }
