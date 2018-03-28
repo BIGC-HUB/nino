@@ -1,6 +1,6 @@
 let courseDel = `<sea  class="btn danger del">删除</sea>`
 let course = {
-    thead: ['课程名称','老师id', '老师简介', '是否有点频课', '操作'],
+    thead: ['课程名称', '老师简介', '老师', '是否有点评课', '操作'],
     tbody: [
         // ["水彩风景课", "鼠帝", "40", '是', courseDel],
         // ["创作思维课", "大宝,虫虫", "20", '否', courseDel],
@@ -14,9 +14,7 @@ Sea('page').on('mousedown', '.add', function() {
     let e = Sea('page')
     let arr = [
         e.find('.courName'),
-        e.find('.teacher'),
         e.find('.introduction'),
-        e.find('.hasReview'),
     ]
     for(var i = 0; i < arr.length; i++) {
         let one = arr[i]
@@ -27,10 +25,10 @@ Sea('page').on('mousedown', '.add', function() {
             arr[i] = one.val()
         }
     }
-    if (arr[3] !== '是') {
-        arr[3] = '否'
-    }
+    arr.push('麦田守望者')
+    arr.push(e.find('sea.radio[name="hasReview"][checked]').text())
     arr.push(courseDel)
+    arr.push('data-id' + e.find('.teacher').val())
     course.tbody.push(arr)
     Sea('sea.table.course').table(course)
 })

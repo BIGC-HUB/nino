@@ -9,9 +9,14 @@ bigsea.prototype.table = function(data) {
     let tbody = '<tbody>'
     data.tbody.forEach(arr => {
         tbody += '<tr>'
-        arr.forEach(e => {
-            tbody += `<td>${e}</td>`
-        })
+        for (let e of arr) {
+            let t = String(e)
+            if( t.slice(0, 5) === 'data-') {
+                break
+            } else {
+                tbody += `<td>${t}</td>`
+            }
+        }
         tbody += '</tr>'
     })
     tbody += '</thead>'
