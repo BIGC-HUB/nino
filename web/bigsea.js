@@ -526,6 +526,19 @@ Sea.static = {
             }
             r.onreadystatechange = function() {
                 if (r.readyState === 4) {
+                    if (r.status === 403) {
+                        Sea.Ajax({
+                            url: config.server + '/user/token',
+                            header: {authorization: 'ninoart' + db.token},
+                            data: {
+                                phone: db.phone
+                            },
+                        }).then(res => {
+                            let data = JSON.parse(res)
+                            log(data)
+                            db.$set('token', data.token)
+                        })
+                    }
                     let res = r.response
                     // 回调函数
                     if (typeof req.callback === 'function') {
