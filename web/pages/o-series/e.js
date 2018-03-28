@@ -1,5 +1,5 @@
 Sea('sea.table.series').on('mousedown', '.up', function(event, i) {
-    let id = series.tbody[i][5].split('data-id=')[1]
+    let id = series.tbody[i][6].split('data-id=')[1]
     Sea.Ajax({
         url: config.server + '/web/course/verify',
         header: {authorization: 'ninoart' + db.token},
@@ -19,7 +19,7 @@ Sea('sea.table.series').on('mousedown', '.up', function(event, i) {
     })
 })
 Sea('sea.table.series').on('mousedown', '.down', function(event, i) {
-    let id = series.tbody[i][5].split('data-id=')[1]
+    let id = series.tbody[i][6].split('data-id=')[1]
     Sea.Ajax({
         url: config.server + '/web/course/verify',
         header: {authorization: 'ninoart' + db.token},
@@ -38,8 +38,30 @@ Sea('sea.table.series').on('mousedown', '.down', function(event, i) {
         render()
     })
 })
+Sea('sea.table.series').on('mousedown', '.del', function(event, i) {
+    let id = series.tbody[i][6].split('data-id=')[1]
+    Sea.confirm('确认删除吗？', function(ok) {
+        if (ok) {
+            Sea.Ajax({
+                url: config.server + '/course/operation',
+                header: {authorization: 'ninoart' + db.token},
+                data: {
+                    type: 5,
+                    // 系列课id 必填
+                    id: id,
+                },
+            }).then(res => {
+                let data = JSON.parse(res)
+                Sea.alert(data.msg)
+                if (data.code === 1000) {
+                    render()
+                }
+            })
+        }
+    })
+})
 let series = {
-    thead: ['课程名称', '老师', '课数', '当前状态','操作'],
+    thead: ['课程名称', '老师', '课数', '当前状态','操作', '危险'],
     tbody: [],
 }
 // 渲染
@@ -56,8 +78,8 @@ let render = function() {
     <sea class="group">
         <sea class="btn up">上架</sea>
         <sea class="btn down">下架</sea>
-    </sea>
-    `
+    </sea>`
+    let seriesDel = `<sea class="btn danger del">删除</sea>`
     let dict = {
         '1': '审核中',
         '2': '上架',
@@ -74,6 +96,7 @@ let render = function() {
             e.class.length,
             dict[e.series.status],
             seriesEdit,
+            seriesDel,
             'data-id=' + e.series.id,
         ])
     }
