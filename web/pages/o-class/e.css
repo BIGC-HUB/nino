@@ -1,0 +1,19 @@
+
+.box-left {
+    height: 2rem;
+    line-height: 2rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    display: inline-flex;
+    justify-content: flex-end;
+    width: 12rem;
+}
+.box-right {
+    display: inline-flex;
+    justify-content: flex-end;
+    width: calc(100% - 16rem);
+}
+.box-left, .box-right {
+    margin-bottom: .5rem;
+}

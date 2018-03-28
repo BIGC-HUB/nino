@@ -8,6 +8,4 @@ a {
 }
 page {
     color: #3d8e9b;
-    display: flex;
-    flex-direction: column;
 }

@@ -42,17 +42,18 @@ const Mer = {
         html = html.replace('<!-- nino-js -->',  Mer.js([
             "/bigsea.js",
             "/bigsea_ui.js",
+        ].concat(arr_js).concat([
             "/app.js",
             path + "/e.js",
-        ].concat(arr_js)))
+        ])))
 
         let arr_css = fs.readdirSync('./web/ui/css').map(function(e) {
             return '/ui/css/' + e
         })
-        html = html.replace('<!-- nino-css -->', Mer.css([
+        html = html.replace('<!-- nino-css -->', Mer.css(arr_css.concat([
             "/app.css",
             path + "/e.css",
-        ].concat(arr_css)))
+        ])))
         return html
     },
 }

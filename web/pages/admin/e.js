@@ -149,6 +149,38 @@ Sea('.info .exit').on('click', function() {
 //     log(data)
 // })
 
+// 创建系列课
+// Sea.Ajax({
+//     url: config.server + '/web/series/create',
+//     header: {authorization: 'ninoart' + db.token},
+//     data: {
+//         // 系列课名称
+//         seriesname: 'test4',
+//         // 系列课大纲
+//         syllabus: 'test',
+//         // 系列课价格
+//         price: 200,
+//         // 系列课封面图片
+//         icon: 'https://i8.mifile.cn/b2c-mimall-media/0147b093d6c05ca0aeef15b35526532d.jpg',
+//         // 系列课下正课列表
+//         course: [
+//             {
+//                 // 课程名称
+//                 courName: 'test',
+//                 // 老师 id
+//                 teacher: "5a9797fc718445d775e53418",
+//                 // 老师简介
+//                 introduction: 'test',
+//                 // 是否有点频课
+//                 hasReview: true,
+//             },
+//         ],
+//     },
+// }).then(res => {
+//     let data = JSON.parse(res)
+//     log(data)
+// })
+
 // 查看系列课 列表
 // Sea.Ajax({
 //     url: config.server + '/course/list',
